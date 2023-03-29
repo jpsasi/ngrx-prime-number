@@ -1,0 +1,15 @@
+<div>
+    <h2>Prime View</h2>
+    <div *ngIf="isPrime()">
+        <div style="margin: 40px;">
+            {{counter$ | async}} is a Prime Number
+        </div>
+        <div *ngIf="isInFavoritePrimes(counterValue); else removeFavorites">
+            <button class="btn btn-danger" (click)="onAddToFavorites()">Add To Favorites</button>
+        </div>
+        <ng-template #removeFavorites>
+            <button class="btn btn-danger" (click)="onRemoveFromFavorites()">Remove From Favorites</button>
+        </ng-template>
+    </div>
+    <div *ngIf="!isPrime()">{{counter$ | async}} is Not a Prime Number</div>
+</div>

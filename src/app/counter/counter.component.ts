@@ -34,4 +34,9 @@ export class CounterComponent implements OnInit {
     console.log('onReset');
     this.store.dispatch(PrimeActions.resetCounter());
   }
+
+  onIsThisPrime() {
+    console.log('onIsThisPrime');
+    this.store.dispatch(PrimeActions.isThisPrimeNumber());
+  }
 }

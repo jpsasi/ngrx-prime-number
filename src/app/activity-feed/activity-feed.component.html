@@ -1,1 +1,20 @@
-<p>activity-feed works!</p>
+<h2>Activity Feed</h2>
+<table class="table table-striped" *ngIf="(activityFeeds$ | async)!!.length > 0; else emptyPrimesView">
+    <thead>
+        <tr>
+            <th>S.NO</th>
+            <th>Activity</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let activity of activityFeeds$ | async; index as i">
+            <td>{{i + 1 }}</td>
+            <td> {{activity.counter}} is {{activity.action}}ed </td>
+        </tr>
+    </tbody>
+</table>
+<ng-template #emptyPrimesView>
+    <div>
+        <h3>No Activities</h3>
+    </div>
+</ng-template>

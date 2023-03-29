@@ -1,6 +1,9 @@
 <div>
     <button class="btn btn-primary" (click)="onDecrement()">-</button>
-    <span>{{counter$ | async}}</span>
+    <span style="font-size: 30px">{{counter$ | async}}</span>
     <button class="btn btn-warning" (click)="onIncrement()">+</button>
     <button class="btn btn-info" (click)="onReset()">Reset</button>
+    <div>
+        <button class="btn btn-danger" style="width: 400px" (click)="onIsThisPrime()">Is this Prime Number?</button>
+    </div>
 </div>

@@ -1,1 +1,30 @@
-<p>favorites works!</p>
+<h2>Favorite Primes</h2>
+<div *ngIf="(favorites$ | async)!!.length > 0; else emptyPrimesView">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>S.NO</th>
+            <th>Prime Number</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let prime of favorites$ | async; index as i">
+            <td>{{i + 1 }}</td>
+            <td>{{prime}}</td>
+            <td>
+                <button class="btn btn-danger" (click)="onDeleteFromFavorites(i)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<button class="btn-primary btn" (click)="onSave()">Save</button>
+<button class="btn-warning btn" (click)="onLoad()">Load</button>
+</div>
+<ng-template #emptyPrimesView>
+    <div>
+        <h3>Favorite Primes are empty</h3>
+    </div>
+    <button class="btn-warning btn" (click)="onLoad()">Load</button>
+</ng-template>
