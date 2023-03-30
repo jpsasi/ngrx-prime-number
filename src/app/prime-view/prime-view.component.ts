@@ -19,6 +19,7 @@ export class PrimeViewComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
+    console.log('onInit prime-view');
     this.counter$ = this.store.select(getCounter);
     this.counter$.subscribe((counter) => this.counterValue = counter);  
     this.favorites$ = this.store.select(getFavorites);
