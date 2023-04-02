@@ -1,48 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../store/prime-number.store';
-import { Observable, tap } from 'rxjs';
-import { getAppState, getFavorites } from '../store/prime-number.selectors';
+import { Observable, Subscription } from 'rxjs';
 import { PrimeActions } from '../store/Actions';
+import { FavoritesState } from './store/favorites.state';
+import { getFavorites, getFavoritesState } from './store/favorites.selector';
+import { FavoritesActions } from './store/favorites.actions';
+import { CounterActions } from '../counter/store/counter.actions';
+import { AppState } from '../store/prime-number.store';
+import { getCounter } from '../counter/store/counter.selector';
 
 @Component({
   selector: 'app-favorites',
   templateUrl: './favorites.component.html',
   styleUrls: ['./favorites.component.css']
 })
-export class FavoritesComponent implements OnInit {
+export class FavoritesComponent implements OnInit, OnDestroy {
 
   favorites$: Observable<number[]> | undefined;
-  appState$: Observable<AppState> | undefined;
-  appState: AppState | undefined;
+  counter: number = 0;
+  favoritesState: FavoritesState | undefined;
+  subscription: Subscription | undefined;
+  subscription1: Subscription | undefined;
 
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {  
     this.favorites$ = this.store.select(getFavorites);
-    this.appState$ = this.store.select(getAppState);
-    this.appState$.subscribe((appState) => {
-      this.appState = appState;
-      console.log('appState in onInit subscribe', this.appState);
-    })
-    this.appState$.pipe(
-      tap((appState) => {
-        this.appState = appState;
-        console.log('appState in onInit', this.appState);
-    })
-    )
+    this.subscription = this.store.select(getFavoritesState).subscribe(
+      (state) => this.favoritesState = state
+    );
+    this.subscription1 = this.store.select(getCounter).subscribe((counter) => this.counter = counter);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe(); 
+    this.subscription1?.unsubscribe();
   }
 
   onDeleteFromFavorites(index: number) {
-    this.store.dispatch(PrimeActions.deleteFromFavorites({index: index}));
+    this.store.dispatch(FavoritesActions.deletefromfavorites({index: index}));
   }
 
   onSave() {
-    console.log('onSave');
-    this.store.dispatch(PrimeActions.saveStore({appState: this.appState!}));
+    this.store.dispatch(FavoritesActions.savefavorites({state: this.favoritesState!}));
+    this.store.dispatch(CounterActions.savecounter({state: {counter:this.counter}}));
   }
 
   onLoad() {
-    this.store.dispatch(PrimeActions.loadState());
+    this.store.dispatch(FavoritesActions.loadfavorites());
+    this.store.dispatch(CounterActions.loadcounter());
   }
 }

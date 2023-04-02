@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Activity, AppState } from '../store/prime-number.store';
 import { Observable } from 'rxjs';
-import { getActivities } from '../store/prime-number.selectors';
+import { Activity, FavoritesState } from '../favorites/store/favorites.state';
+import { getActivities } from '../favorites/store/favorites.selector';
 
 @Component({
   selector: 'app-activity-feed',
@@ -12,7 +12,7 @@ import { getActivities } from '../store/prime-number.selectors';
 export class ActivityFeedComponent implements OnInit {
 
   activityFeeds$: Observable<Activity[]> | undefined
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<FavoritesState>) {}
 
   ngOnInit(): void {
     this.activityFeeds$ = this.store.select(getActivities)

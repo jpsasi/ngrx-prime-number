@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store/prime-number.store';
 import { Observable, tap } from 'rxjs';
-import { getCounter, getFavorites } from '../store/prime-number.selectors';
-import { PrimeActions } from '../store/Actions';
+import { getCounter } from '../counter/store/counter.selector';
+import { FavoritesActions } from '../favorites/store/favorites.actions';
+import { getFavorites } from '../favorites/store/favorites.selector';
 
 @Component({
   selector: 'app-prime-view',
@@ -48,10 +49,14 @@ export class PrimeViewComponent implements OnInit {
   }
 
   onAddToFavorites() {
-    this.store.dispatch(PrimeActions.addToFavorites());
+    this.store.dispatch(
+      FavoritesActions.addtofavorites({counter: this.counterValue})
+    )
   }
 
   onRemoveFromFavorites() {
-    this.store.dispatch(PrimeActions.removeFromFavorites());
+    this.store.dispatch(
+      FavoritesActions.removefromfavorites({counter: this.counterValue})
+    );
   }
 }

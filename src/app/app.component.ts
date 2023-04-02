@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './store/prime-number.store';
 import { PrimeActions } from './store/Actions';
+import { FavoritesActions } from './favorites/store/favorites.actions';
+import { CounterActions } from './counter/store/counter.actions';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +16,8 @@ export class AppComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    const appState = localStorage.getItem('store');
-    if (appState) {
-      this.store.dispatch(PrimeActions.loadedStore({appState: JSON.parse(appState)}));
-    }
+    this.store.dispatch(CounterActions.loadcounter());
+    this.store.dispatch(FavoritesActions.loadfavorites());
+    console.log('load events dispatched');
   }
 }

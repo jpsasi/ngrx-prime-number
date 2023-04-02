@@ -7,20 +7,3 @@ export const getAppState = createSelector(
     selectPrimeNumberSelector,
     (state) => state
 )
-
-export const getCounter = createSelector(
-    selectPrimeNumberSelector,
-    (state) => state.counter
-);
-
-export const getFavorites = createSelector(
-    selectPrimeNumberSelector,
-    (state) => { 
-        console.log('getFavorites ', state);
-        return state.favorites; }
-);
-
-export const getActivities = createSelector(
-    selectPrimeNumberSelector,
-    (state) => state.activities
-)

@@ -1,42 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../store/prime-number.store';
-import { Observable } from 'rxjs';
-import { getCounter } from '../store/prime-number.selectors';
-import { PrimeActions } from '../store/Actions';
+import { Observable, Subscription } from 'rxjs';
+import { CounterState } from './store/counter.state';
+import { getCounter } from './store/counter.selector';
+import { CounterActions } from './store/counter.actions';
 
 @Component({
   selector: 'app-counter',
   templateUrl: './counter.component.html',
   styleUrls: ['./counter.component.css']
 })
-export class CounterComponent implements OnInit {
+export class CounterComponent implements OnInit, OnDestroy {
 
   counter$: Observable<number> | undefined;
+  counter: number = 0
+  subsription: Subscription | undefined;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<CounterState>) {}
 
   ngOnInit(): void {
-    this.counter$ = this.store.select(getCounter);    
+    this.counter$ = this.store.select(getCounter);
+    this.subsription = this.counter$.subscribe((value) => this.counter = value);
+  }
+
+  ngOnDestroy(): void {
+    this.subsription?.unsubscribe();
   }
 
   onIncrement() {
     console.log('onIncrement');
-    this.store.dispatch(PrimeActions.incrCounter());
+    this.store.dispatch(CounterActions.incrcounter());
   }
 
   onDecrement() {
     console.log('onDecrement');
-    this.store.dispatch(PrimeActions.decrCounter());
+    this.store.dispatch(CounterActions.decrcounter());
   }
 
   onReset() {
     console.log('onReset');
-    this.store.dispatch(PrimeActions.resetCounter());
+    this.store.dispatch(CounterActions.resetcounter());
   }
 
   onIsThisPrime() {
     console.log('onIsThisPrime');
-    this.store.dispatch(PrimeActions.isThisPrimeNumber());
+    this.store.dispatch(CounterActions.isthisprimenumber({counter: this.counter}));
   }
 }
